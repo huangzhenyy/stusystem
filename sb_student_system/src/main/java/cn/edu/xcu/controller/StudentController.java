@@ -13,6 +13,9 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import cn.edu.xcu.entity.Student;
 import cn.edu.xcu.service.IStudentService;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -43,6 +46,35 @@ public class StudentController {
 		IPage<Student> resuIPage = iStudentService.page(toWhichPage, wrapper);
 		return resuIPage;
 
+	}
+	@RequestMapping("/delete")
+	public Map<String,Object> delete(Integer id){
+		Map<String,Object> result=new HashMap<>();
+		boolean ret=iStudentService.removeById(id);
+		if(ret) {
+			result.put("code", 1);
+			result.put("msg", "删除成功");
+		}else {
+			result.put("code", -1);
+			result.put("msg", "删除失败");
+		}
+		return result;
+		
+	}
+	@RequestMapping("/addStudent")
+	public Map<String,Object> addStudent(Student student){
+		Map<String,Object> result=new HashMap<>();
+		boolean ret=iStudentService.save(student);
+		
+		if(ret) {
+			result.put("code", 1);
+		}else {
+			
+			result.put("code", -1);
+			result.put("msg", "添加失败");
+		}
+		return result;
+		
 	}
 }
 
